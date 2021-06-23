@@ -15,4 +15,6 @@ public class BuildingProfile : ScriptableObject
     public Sprite Sprite => _sprite;
     public float Price => _price;
     public GameObject BuildingPrefab => _buildingPrefab;
+
+    public List<ProductionElement> PossibleProduction;
 }

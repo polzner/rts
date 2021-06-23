@@ -16,3 +16,5 @@ MonoBehaviour:
   _name: "\u0411\u0430\u0440\u0430\u043A"
   _sprite: {fileID: 21300000, guid: 16123de5fca13624a8be3cc4cee17513, type: 3}
   _price: 10
+  PossibleProduction:
+  - {fileID: 11400000, guid: aacd5cde354b03c4f8efb55aca53cb01, type: 2}

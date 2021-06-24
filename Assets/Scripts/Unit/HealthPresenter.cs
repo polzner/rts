@@ -18,10 +18,8 @@ public class HealthPresenter : MonoBehaviour
         _enemy.HealthChanged -= UpdateHealthDisplay;
     }
 
-    private void UpdateHealthDisplay(int health,int maxHealth)
+    private void UpdateHealthDisplay(int health)
     {
-        _enemyRenderer.material.color = new Color(_enemyRenderer.material.color.r + _enemyRenderer.material.color.r*health / maxHealth
-            , _enemyRenderer.material.color.g* health / maxHealth, _enemyRenderer.material.color.b* health / maxHealth);
+        
     }
-
 }

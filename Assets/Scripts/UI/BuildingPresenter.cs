@@ -21,6 +21,4 @@ public class BuildingPresenter : MonoBehaviour
         if (building != null)
             _button.onClick.AddListener(() => BuildingPlaceLogick.Instance.Place(building));
     }
-
-    
 }

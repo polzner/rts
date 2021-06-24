@@ -11,7 +11,6 @@ public class Unit : MonoBehaviour
     private float _resourceMiningTimer;
     private int _resourceQuantity;
     private Enemy _enemy;
-    private int _damage = 5;
     private Transform _selfTransform;
 
     private StateMachine _stateMachine;
@@ -19,6 +18,7 @@ public class Unit : MonoBehaviour
     private AttackingState _attackingState;
 
     [SerializeField] private GameObject _selectedIconGameObject;
+    [SerializeField] private int _damage = 5;
 
     public int Damage => _damage;
     public bool IsSelected => _isSelected;    
@@ -34,8 +34,8 @@ public class Unit : MonoBehaviour
         _groundedState = new MovingState(this, _stateMachine);
         _attackingState = new AttackingState(this, _stateMachine);
         _stateMachine.Initialise(_groundedState);
-
         _selfTransform = GetComponent<Transform>();
+
     }
 
     private void Update()
@@ -50,6 +50,7 @@ public class Unit : MonoBehaviour
         
         Selected(false);
     }
+
 
     public void SetEnemyTarget(Enemy enemy)
     {

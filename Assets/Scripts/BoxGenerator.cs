@@ -16,7 +16,7 @@ public class BoxGenerator : MonoBehaviour, ISquadPositionGentrator
         {
             if(rowLenght == step)
             {
-                currentVerticalRowSpacing -= 2;
+                currentVerticalRowSpacing -= scale;
                 step = 0;
             }
 

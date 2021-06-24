@@ -231,6 +231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _selectedIconGameObject: {fileID: 4269395707022386539}
+  _health: 100
 --- !u!114 &48256497696414854
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ProductionElement", order = 998)]
+[CreateAssetMenu(menuName = "ProductionElement", order = 9999)]
 public class ProductionElement : ScriptableObject
 {
     [SerializeField] private Sprite _sprite;

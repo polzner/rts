@@ -56,36 +56,11 @@ public class SelectUnits : MonoBehaviour
                 }
             }
         }                     
-
-        //if (Input.GetMouseButtonDown(1))
-        //{
-        //    bool isHitted = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
-            
-        //    if (isHitted && hit.collider.TryGetComponent<ResourceSite>(out ResourceSite site))
-        //    {
-        //        foreach (var unit in _selectedUnits)
-        //        {
-        //            unit.SetResourceSite(site);
-        //        }
-        //    }
-        //    else if (isHitted && hit.collider.TryGetComponent<Enemy>(out Enemy enemy))
-        //    {
-        //        enemy.Selected(true);
-
-        //        foreach (var unit in _selectedUnits)
-        //        {
-        //            unit.SetEnemyTarget(enemy);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        OnMove.Invoke(mouse3D.GetCurrentWorldPosition());                
-        //    }
-        //}
     }
 
-    public void SetCirclePosition(Vector3 point)
+    public void SetCirclePosition(Vector3 point, float distance)
     {
+        _circleGenerator.SetDistance(distance);
         Vector3[] pos = _circleGenerator.GetPosition(_selectedUnits.Count,point);
 
         for (int i = 0; i < pos.Length; i++)

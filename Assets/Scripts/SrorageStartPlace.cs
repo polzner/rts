@@ -17,7 +17,7 @@ public class SrorageStartPlace : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && TryPlace())
         {
-            _storage = null;
+            SelectUnits.Instance.SetStorage(_storage.GetComponent<Storage>());
             Destroy(this);
         }
         else
@@ -39,7 +39,7 @@ public class SrorageStartPlace : MonoBehaviour
         }
         else
         {
-            _storage.layer = LayerMask.NameToLayer("Buildings");
+            _storage.layer = LayerMask.NameToLayer("MiningSite");
             Destroy(_trigger);
             _changer.Placed();
             return true;

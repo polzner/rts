@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class AttackingState : State
 {
+    private Camera _camera;
     private Enemy _enemy;
     private float _attackTimer;
     [SerializeField] private float _attackTimerMax = 1;
@@ -20,6 +21,7 @@ public class AttackingState : State
         _enemy = Unit.EnemyTarget;
         _enemy.Selected(true);
         SelectUnits.Instance.SetCirclePosition(_enemy.Position, _attackDistance);
+        _camera = Camera.main;
     }
 
     public override void Exit()
@@ -47,7 +49,7 @@ public class AttackingState : State
         }
 
         if(Unit.IsSelected && Input.GetMouseButtonDown(1) && 
-            Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit) &&
+            Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit) &&
             hit.collider.TryGetComponent<Enemy>(out Enemy enemy))
         {
             _enemy.Selected(false);

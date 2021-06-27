@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class MovingState : State
 {
+    private Camera _camera;
+
     public MovingState(Unit unit, StateMachine stateMachine) : base(unit, stateMachine)
     {
-
     }
 
     public override void Enter()
     {
         base.Enter();
+        _camera = Camera.main;
     }
 
     public override void Exit()
@@ -26,7 +28,7 @@ public class MovingState : State
         {
             Target = mouse3D.GetCurrentWorldPosition();
             SelectUnits.Instance.SetBoxPosition(Target);
-            bool isHitted = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
+            bool isHitted = Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
 
             if (isHitted && hit.collider.TryGetComponent<Enemy>(out Enemy enemy))
             {
@@ -35,7 +37,8 @@ public class MovingState : State
             }
             else if(isHitted && hit.collider.TryGetComponent<ResourceSite>(out ResourceSite site))
             {
-
+                Unit.SetResourceSite(site);
+                CurrentStateMachine.ChangeState(Unit.MiningState);
             }
         }
     }

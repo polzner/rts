@@ -7,7 +7,7 @@ public class BoxGenerator : MonoBehaviour, ISquadPositionGentrator
     public Vector3[] GetPosition(int count, Vector3 position)
     {
         List<Vector3> pos = new List<Vector3>();
-        int rowLenght = 3;
+        int rowLenght = (int)Mathf.Sqrt(count);
         int currentVerticalRowSpacing = 2;
         int scale = 2;
         int step = 0;

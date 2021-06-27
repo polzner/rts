@@ -9,9 +9,12 @@ public class SelectUnits : MonoBehaviour
     [SerializeField] private BoxGenerator _boxGenerator;
     [SerializeField] private CircleGenerator _circleGenerator;
 
-    public static SelectUnits Instance { get; private set; } 
     private Vector3 _startPosition;
+    private Storage _storage;
     private List<Unit> _selectedUnits = new List<Unit>();
+
+    public static SelectUnits Instance { get; private set; }
+    public Storage Storage => _storage;
 
     private void Awake()
     {
@@ -79,16 +82,11 @@ public class SelectUnits : MonoBehaviour
         }
     }
 
-    public static void MoveUnits(Vector3 point) => Instance.Move(point);
-
-    private void Move(Vector3 position)
+    public void SetStorage(Storage storage)
     {
-        foreach (var unit in _selectedUnits)
-        {
-            unit.SetDestination(position);
-        }
+        _storage = storage;
     }
-
+    
     private Vector3 GetLowerLeftAngleCoordinate()
     {
         Vector3 currentPos = mouse3D.GetCurrentWorldPosition();

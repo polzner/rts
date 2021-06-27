@@ -1,21 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
-public class ResourceManager : MonoBehaviour
-{
-    public static ResourceManager Instance { get; private set; }
-    
+public class Storage : MonoBehaviour
+{    
+    [SerializeField] private float _radius = 4;
     private int _resourceQuantity;
 
+    public float Radius => _radius;
+    public Vector3 Position => gameObject.transform.position;
     public int ResourceQuantity => _resourceQuantity;
 
     public event UnityAction OnResourceQuantityChanged;
 
     private void Awake()
     {
-        Instance = this;
         _resourceQuantity = 0;
     }
 

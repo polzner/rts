@@ -8,14 +8,13 @@ public class Unit : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
     private bool _isSelected;
     private ResourceSite _resourceSite;
-    private float _resourceMiningTimer;
-    private int _resourceQuantity;
     private Enemy _enemy;
     private Transform _selfTransform;
 
     private StateMachine _stateMachine;
     private MovingState _groundedState;
     private AttackingState _attackingState;
+    private MiningState _miningState;
 
     [SerializeField] private GameObject _selectedIconGameObject;
     [SerializeField] private int _damage = 5;
@@ -27,19 +26,22 @@ public class Unit : MonoBehaviour
     public StateMachine StateMachine => _stateMachine; 
     public MovingState GroundedState => _groundedState;
     public AttackingState AttackingState  => _attackingState; 
+    public MiningState MiningState  => _miningState;
+    public ResourceSite ResourceSite => _resourceSite;
 
     private void Start()
     {
         _stateMachine = new StateMachine();
         _groundedState = new MovingState(this, _stateMachine);
         _attackingState = new AttackingState(this, _stateMachine);
+        _miningState = new MiningState(this, _stateMachine);
+        
         _stateMachine.Initialise(_groundedState);
         _selfTransform = GetComponent<Transform>();
-
     }
 
     private void Update()
-    {      
+    {
         _stateMachine.CurrentState.InputUpdate();
         _stateMachine.CurrentState.LogicUpdate();
     }

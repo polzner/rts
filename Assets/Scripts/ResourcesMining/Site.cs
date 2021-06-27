@@ -7,7 +7,13 @@ public class Site : ScriptableObject
 {
     [SerializeField] private int _resourceQuantityInOneIteration;
     [SerializeField] private float _timeToMine;
+    [SerializeField] private float _distanceToStartMining;
+    [SerializeField] private GameObject _prefab;
+    [SerializeField] private string _name;
 
-    public int ResourceQuantityInOneIteration1 => _resourceQuantityInOneIteration;
+    public int ResourceQuantityInOneIteration => _resourceQuantityInOneIteration;
     public float TimeToMine => _timeToMine;
+    public float DistanceToStartMining => _distanceToStartMining;
+    public GameObject Prefab => _prefab;
+    public string Name => _name;
 }

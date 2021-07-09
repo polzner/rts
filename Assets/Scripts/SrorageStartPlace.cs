@@ -7,6 +7,7 @@ public class SrorageStartPlace : MonoBehaviour
     [SerializeField] private GameObject _storage;
     [SerializeField] private CollisionTrigger _trigger;
     [SerializeField] private BuildingGhostStateChanger _changer;
+    [SerializeField] private GameObject _enemyPlacer;
 
     private void Start()
     {
@@ -18,6 +19,7 @@ public class SrorageStartPlace : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && TryPlace())
         {
             SelectUnits.Instance.SetStorage(_storage.GetComponent<Storage>());
+
             Destroy(this);
         }
         else
@@ -42,6 +44,7 @@ public class SrorageStartPlace : MonoBehaviour
             _storage.layer = LayerMask.NameToLayer("MiningSite");
             Destroy(_trigger);
             _changer.Placed();
+            _enemyPlacer.SetActive(true);
             return true;
         }
     }

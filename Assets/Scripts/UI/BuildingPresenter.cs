@@ -13,12 +13,22 @@ public class BuildingPresenter : MonoBehaviour
     [SerializeField] private Text _buildingPrice;
     [SerializeField] private Button _button;
 
-    public void Present(BuildingProfile building)
+    public void Present(BuildingProfile building, Storage storage)
     {
         _buildingName.text = building.Name;
+        _buildingName.text += $"\n{ building.Price.ToString()}";
         _buildingImage.sprite = building.Sprite;
 
         if (building != null)
-            _button.onClick.AddListener(() => BuildingPlaceLogick.Instance.Place(building));
+            _button.onClick.AddListener(() =>
+            {
+                if(storage.ResourceQuantity >= building.Price)
+                {
+                    BuildingPlaceLogick.Instance.Place(building);
+                    storage.SpendResource(building.Price);
+                }
+            });
     }
+
+
 }

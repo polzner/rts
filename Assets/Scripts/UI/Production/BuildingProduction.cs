@@ -19,11 +19,12 @@ public class BuildingProduction : MonoBehaviour, IPointerClickHandler
     public event UnityAction<InProduction> OnProducrionTimeChanged;
     public event UnityAction<ProductionElement> OnDone;
 
-    public void AddInProduction(ProductionElement element)
+    public void AddInProduction(ProductionElement element, Storage storage)
     {
-        if (_possibleProduction.Contains(element))
+        if (_possibleProduction.Contains(element) && element.Price <= storage.ResourceQuantity)
         {
             _elementsInPrpgress.Enqueue(new InProduction(element, 0));
+            storage.SpendResource(element.Price);
         }
 
         OnProductionChange?.Invoke();

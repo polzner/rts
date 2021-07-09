@@ -4,13 +4,14 @@ using UnityEngine;
 
 public abstract class State
 {
-    protected Unit Unit;
+    protected Character Character;
     protected StateMachine CurrentStateMachine;
     protected Vector3 Target;
+    public string Name { protected set; get; }
 
-    public State(Unit unit, StateMachine stateMachine)
+    public State(Character unit, StateMachine stateMachine)
     {
-        Unit = unit;
+        Character = unit;
         CurrentStateMachine = stateMachine;
     }
 

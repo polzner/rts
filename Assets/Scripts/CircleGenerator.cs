@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class CircleGenerator : MonoBehaviour, ISquadPositionGentrator
 {
+    public static CircleGenerator Instance { get; private set; }
+
     private float _distance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public void SetDistance(float distance)
     {

@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class ProductionPanel : MonoBehaviour
 {
-    public static ProductionPanel Instance { get; private set; } 
+    public static ProductionPanel Instance { get; private set; }
 
+    [SerializeField] private Storage _storage;
     [SerializeField] private GameObject _productionElementPrefab;
     [SerializeField] private Transform _possibleProductionElementsContainer;
     [SerializeField] private Transform _inProductionElementsContainer;
@@ -47,7 +48,7 @@ public class ProductionPanel : MonoBehaviour
         foreach (var possible in _current.PossibleProduction)
         {
             var go = Instantiate(_productionElementPrefab, _possibleProductionElementsContainer);
-            go.GetComponent<ProductionPresenter>().Present(possible, () => _current.AddInProduction(possible));
+            go.GetComponent<ProductionPresenter>().Present(possible, () => _current.AddInProduction(possible, _storage));
         }
     }
 

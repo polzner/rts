@@ -135,6 +135,7 @@ MonoBehaviour:
   _storage: {fileID: 2315760876443568914}
   _trigger: {fileID: 3318118507868290357}
   _changer: {fileID: 5119720669796690329}
+  _enemyPlacer: {fileID: 0}
 --- !u!114 &3318118507868290357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,6 +207,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _radius: 4
+  _strenght: 100
+  _resourceQuantity: 15
 --- !u!1 &2831132925844837686
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,12 +10,12 @@ public class HealthPresenter : MonoBehaviour
 
     private void OnEnable()
     {
-        _enemy.HealthChanged += UpdateHealthDisplay;
+        _enemy.OnHealthChanged += UpdateHealthDisplay;
     }
 
     private void OnDisable()
     {
-        _enemy.HealthChanged -= UpdateHealthDisplay;
+        _enemy.OnHealthChanged -= UpdateHealthDisplay;
     }
 
     private void UpdateHealthDisplay(int health)

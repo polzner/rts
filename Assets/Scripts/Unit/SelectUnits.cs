@@ -7,7 +7,6 @@ public class SelectUnits : MonoBehaviour
 {
     [SerializeField] private Transform _selectionAreaTransform;
     [SerializeField] private BoxGenerator _boxGenerator;
-    [SerializeField] private CircleGenerator _circleGenerator;
 
     private Vector3 _startPosition;
     private Storage _storage;
@@ -15,6 +14,7 @@ public class SelectUnits : MonoBehaviour
 
     public static SelectUnits Instance { get; private set; }
     public Storage Storage => _storage;
+    public int SelectedUnitsQuantity => _selectedUnits.Count;
 
     private void Awake()
     {
@@ -61,10 +61,23 @@ public class SelectUnits : MonoBehaviour
         }                     
     }
 
+    public void SetRandomCirclePosition(Vector3 point, float radius)
+    {
+        foreach (var unit in _selectedUnits)
+        {
+            unit.SetDestination(RandomCircleGenerator.Instance.GetPosition(radius, point));
+        }
+    }
+
+    public Unit GetRandomSelectedUnit()
+    {
+        return _selectedUnits[Random.Range(0, _selectedUnits.Count-1)];
+    } 
+
     public void SetCirclePosition(Vector3 point, float distance)
     {
-        _circleGenerator.SetDistance(distance);
-        Vector3[] pos = _circleGenerator.GetPosition(_selectedUnits.Count,point);
+        CircleGenerator.Instance.SetDistance(distance);
+        Vector3[] pos = CircleGenerator.Instance.GetPosition(_selectedUnits.Count,point);
 
         for (int i = 0; i < pos.Length; i++)
         {

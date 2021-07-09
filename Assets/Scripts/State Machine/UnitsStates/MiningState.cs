@@ -11,6 +11,7 @@ public class MiningState : State
     private int _resourceQuantity;
     private Vector3 _miningUnitPosition;
     private _state state = _state.Mining;
+    private Unit _unit;
 
     private enum _state
     {
@@ -18,57 +19,59 @@ public class MiningState : State
         Delivering
     }
 
-    public MiningState(Unit unit, StateMachine stateMachine) : base(unit, stateMachine)
+    public MiningState(Character unit, StateMachine stateMachine) : base(unit, stateMachine)
     {
+        Name = "Mining";
     }
 
     public override void Enter()
     {
         base.Enter();
-        _site = Unit.ResourceSite;
+        _unit = (Unit)Character;
+        _site = ((Unit)Character).ResourceSite;
         _storage = SelectUnits.Instance.Storage;
-        SelectUnits.Instance.SetCirclePosition(_site.GetPosition(), _site.DistanceToStartMining);
+        SelectUnits.Instance.SetRandomCirclePosition(_site.GetPosition(), _site.DistanceToStartMining);
         _camera = Camera.main;
     }
 
     public override void Exit()
     {
         base.Exit();
-        Unit.SetDestination(mouse3D.GetCurrentWorldPosition());
+        _unit.SetDestination(mouse3D.GetCurrentWorldPosition());
     }
 
     public override void LogicUpdate()
     {
-        if((Unit.Position - _site.GetPosition()).magnitude <= _site.DistanceToStartMining + 0.5f && state == _state.Mining)
+        if((_unit.Position - _site.GetPosition()).magnitude <= _site.DistanceToStartMining + 1f && state == _state.Mining)
         {
-            _miningUnitPosition = Unit.Position;
+            _miningUnitPosition = _unit.Position;
             _miningTimer += Time.deltaTime;
             if(_miningTimer >= _site.MaxMiningTime)
             {
                 _resourceQuantity = _site.ResourceQuantityInOneIteration;
-                Unit.SetDestination(_storage.Position);
+                _unit.SetDestination(_storage.Position);
                 _miningTimer = 0;
                 state = _state.Delivering;
             }
         }    
         
-        if((Unit.Position - _storage.Position).magnitude <= _storage.Radius && state == _state.Delivering)
+        if(_storage != null && (_unit.Position - _storage.Position).magnitude <= _storage.Radius && state == _state.Delivering)
         {
             _storage.AddResource(_site.ResourceQuantityInOneIteration);
             _resourceQuantity = 0;
-            Unit.SetDestination(_miningUnitPosition);
+            _unit.SetDestination(_miningUnitPosition);
             state = _state.Mining;
         }
 
-        if (Input.GetMouseButtonDown(1) && Unit.IsSelected && Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit) &&
+        if (Input.GetMouseButtonDown(1) && _unit.IsSelected && Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit) &&
             hit.collider.TryGetComponent<Enemy>(out Enemy enemy))
         {
-            Unit.SetEnemyTarget(enemy);
-            CurrentStateMachine.ChangeState(Unit.AttackingState);
+            _unit.SetEnemyTarget(enemy);
+            CurrentStateMachine.ChangeState((State)_unit.AttackingState);
         }
-        else if(Input.GetMouseButtonDown(1) && Unit.IsSelected)
+        else if(Input.GetMouseButtonDown(1) && _unit.IsSelected)
         {
-            Unit.StateMachine.ChangeState(Unit.GroundedState);
+            _unit.StateMachine.ChangeState(_unit.GroundedState);
         }
     }
 }

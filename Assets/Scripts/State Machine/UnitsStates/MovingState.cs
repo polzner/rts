@@ -5,14 +5,17 @@ using UnityEngine;
 public class MovingState : State
 {
     private Camera _camera;
+    private Unit _unit;
 
-    public MovingState(Unit unit, StateMachine stateMachine) : base(unit, stateMachine)
+    public MovingState(Character unit, StateMachine stateMachine) : base(unit, stateMachine)
     {
+        Name = "Moving";
     }
 
     public override void Enter()
     {
         base.Enter();
+        _unit = (Unit)Character;
         _camera = Camera.main;
     }
 
@@ -24,7 +27,8 @@ public class MovingState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (Unit.IsSelected && Input.GetMouseButtonDown(1))
+
+        if (_unit.IsSelected && Input.GetMouseButtonDown(1))
         {
             Target = mouse3D.GetCurrentWorldPosition();
             SelectUnits.Instance.SetBoxPosition(Target);
@@ -32,13 +36,13 @@ public class MovingState : State
 
             if (isHitted && hit.collider.TryGetComponent<Enemy>(out Enemy enemy))
             {
-                Unit.SetEnemyTarget(enemy);
-                CurrentStateMachine.ChangeState(Unit.AttackingState);
+                _unit.SetEnemyTarget(enemy);
+                CurrentStateMachine.ChangeState((State)_unit.AttackingState);
             }
             else if(isHitted && hit.collider.TryGetComponent<ResourceSite>(out ResourceSite site))
             {
-                Unit.SetResourceSite(site);
-                CurrentStateMachine.ChangeState(Unit.MiningState);
+                _unit.SetResourceSite(site);
+                CurrentStateMachine.ChangeState((State)_unit.MiningState);
             }
         }
     }

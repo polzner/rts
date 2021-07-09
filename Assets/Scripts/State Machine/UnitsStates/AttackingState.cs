@@ -7,21 +7,22 @@ public class AttackingState : State
 {
     private Camera _camera;
     private Enemy _enemy;
+    private Unit _unit;
     private float _attackTimer;
-    [SerializeField] private float _attackTimerMax = 1;
-    [SerializeField] private float _attackDistance = 3;
 
-    public AttackingState(Unit unit, StateMachine stateMachine) : base(unit, stateMachine)
+    public AttackingState(Character unit, StateMachine stateMachine) : base(unit, stateMachine)
     {
+        Name = "Attacking";
     }
 
     public override void Enter()
     {
         base.Enter();
-        _enemy = Unit.EnemyTarget;
+        _unit = (Unit)Character;
+        _enemy = _unit.EnemyTarget;
         _enemy.Selected(true);
-        SelectUnits.Instance.SetCirclePosition(_enemy.Position, _attackDistance);
-        _camera = Camera.main;
+        _camera = Camera.main;       
+        _enemy.OnPositionChange += SetPosition;
     }
 
     public override void Exit()
@@ -29,8 +30,9 @@ public class AttackingState : State
         base.Exit();
         if(_enemy != null)
         {
+            _enemy.OnPositionChange -= SetPosition;
             _enemy.Selected(false);
-            Unit.SetDestination(mouse3D.GetCurrentWorldPosition());
+            _unit.SetDestination(mouse3D.GetCurrentWorldPosition());
         }
     }
 
@@ -38,28 +40,34 @@ public class AttackingState : State
     {
         base.LogicUpdate();
 
-        if (_enemy != null && (Unit.Position - _enemy.Position).magnitude <= _attackDistance + 0.5f)
+        if (_enemy != null && (_unit.Position - _enemy.Position).magnitude <= _unit.AttackDistance + 0.5f)
         {
             _attackTimer -= Time.deltaTime;
             if (_attackTimer <= 0)
             {
-                _attackTimer = _attackTimerMax;
-                _enemy.TakeDamage(Unit.Damage);
+                _attackTimer = _unit.AttackTimerMax;
+                _enemy.TakeDamage((int)_unit.Damage);
             }
         }
 
-        if(Unit.IsSelected && Input.GetMouseButtonDown(1) && 
+        if(_unit.IsSelected && Input.GetMouseButtonDown(1) && 
             Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit) &&
             hit.collider.TryGetComponent<Enemy>(out Enemy enemy))
         {
+            _enemy.OnPositionChange -= SetPosition;
             _enemy.Selected(false);
             _enemy = enemy;
             _enemy.Selected(true);
-            SelectUnits.Instance.SetCirclePosition(_enemy.Position, _attackDistance);
+            _enemy.OnPositionChange += SetPosition;
         }
-        else if (Input.GetMouseButtonDown(1) && Unit.IsSelected || _enemy == null)
+        else if (Input.GetMouseButtonDown(1) && _unit.IsSelected || _enemy == null)
         {
-            Unit.StateMachine.ChangeState(Unit.GroundedState);
+            _unit.StateMachine.ChangeState(_unit.GroundedState);
         }
+    }
+
+    private void SetPosition()
+    {
+        SelectUnits.Instance.SetCirclePosition(_enemy.Position, _unit.AttackDistance);
     }
 }
